@@ -1,0 +1,14 @@
+version: '3'
+services:
+    mongo:
+        image: mongo:6
+        ports:
+            - 27017:27017
+        restart: unless-stopped
+        volumes:
+            - mongo:/data/db
+
+# Volumes
+volumes:
+    mongo:
+        driver: local
