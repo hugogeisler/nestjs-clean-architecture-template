@@ -1,0 +1,17 @@
+{
+    "moduleFileExtensions": ["js", "json", "ts"],
+    "testRegex": ".*\\.unit\\.ts$",
+    "rootDir": "..",
+    "testEnvironment": "node",
+    "transform": {
+        "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": ["src/**/*.(t|j)s"],
+    "coverageDirectory": "./coverage",
+    "moduleNameMapper": {
+        "@domain/(.*)": "<rootDir>/src/domain/$1",
+        "@infrastructure/(.*)": "<rootDir>/src/infrastructure/$1",
+        "@use-cases/(.*)": "<rootDir>/src/use-cases/$1",
+        "@shared/(.*)": "<rootDir>/src/shared/$1"
+    }
+}
