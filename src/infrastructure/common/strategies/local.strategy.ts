@@ -1,11 +1,11 @@
-import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service';
-import { LoggerService } from '@infrastructure/logger/logger.service';
-import { UseCaseProxy } from '@infrastructure/use-cases-proxy/use-case.proxy';
-import { UsecasesProxyModule } from '@infrastructure/use-cases-proxy/use-cases.module';
-import { Inject, Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
-import { LoginUseCases } from '@use-cases/authentication/login.use-case';
 import { Strategy } from 'passport-local';
+import { PassportStrategy } from '@nestjs/passport';
+import { Inject, Injectable } from '@nestjs/common';
+import { UsecasesProxyModule } from '@infrastructure/use-cases-proxy/use-cases.module';
+import { UseCaseProxy } from '@infrastructure/use-cases-proxy/use-case.proxy';
+import { LoginUseCases } from '@domain/use-cases/authentication/login.use-case';
+import { LoggerService } from '@infrastructure/logger/logger.service';
+import { ExceptionsService } from '@infrastructure/exceptions/exceptions.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -15,18 +15,28 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         private readonly logger: LoggerService,
         private readonly exceptionService: ExceptionsService,
     ) {
-        super();
+        super({
+            usernameField: 'email',
+            passwordField: 'password',
+        });
     }
 
-    async validate(username: string, password: string) {
-        if (!username || !password) {
-            this.logger.warn('LocalStrategy', `Username or password is missing, BadRequestException`);
+    async validate(email: string, password: string) {
+        if (!email || !password) {
+            this.logger.warn(
+                'LocalStrategy',
+                `Email or password is missing, BadRequestException`,
+            );
             this.exceptionService.UnauthorizedException();
         }
-        const user = await this.loginUsecaseProxy.getInstance().validateUserForLocalStragtegy(username, password);
+        const user = await this.loginUsecaseProxy
+            .getInstance()
+            .validateUserForLocalStragtegy(email, password);
         if (!user) {
-            this.logger.warn('LocalStrategy', `Invalid username or password`);
-            this.exceptionService.UnauthorizedException({ message: 'Invalid username or password.' });
+            this.logger.warn('LocalStrategy', `Invalid email or password`);
+            this.exceptionService.UnauthorizedException({
+                message: 'Invalid email or password.',
+            });
         }
         return user;
     }

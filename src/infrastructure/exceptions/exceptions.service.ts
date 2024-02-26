@@ -1,4 +1,7 @@
-import { IException, IFormatExceptionMessage } from '@domain/exceptions/exceptions.interface';
+import {
+    IException,
+    IFormatExceptionMessage,
+} from '@domain/exceptions/exceptions.interface';
 import {
     BadRequestException,
     ForbiddenException,

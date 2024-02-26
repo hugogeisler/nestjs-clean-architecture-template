@@ -1,4 +1,9 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import {
+    CallHandler,
+    ExecutionContext,
+    Injectable,
+    NestInterceptor,
+} from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Observable, map } from 'rxjs';
 
@@ -16,8 +21,13 @@ export class ResponseFormat<T> {
 }
 
 @Injectable()
-export class ResponseInterceptor<T> implements NestInterceptor<T, ResponseFormat<T>> {
-    intercept(context: ExecutionContext, next: CallHandler): Observable<ResponseFormat<T>> {
+export class ResponseInterceptor<T>
+    implements NestInterceptor<T, ResponseFormat<T>>
+{
+    intercept(
+        context: ExecutionContext,
+        next: CallHandler,
+    ): Observable<ResponseFormat<T>> {
         const now = Date.now();
         const httpContext = context.switchToHttp();
         const request = httpContext.getRequest();

@@ -31,6 +31,11 @@ class EnvironmentVariables {
     DATABASE_PASSWORD: string;
     @IsString()
     DATABASE_NAME: string;
+
+    @IsString()
+    ADMIN_EMAIL: string;
+    @IsString()
+    ADMIN_PASSWORD: string;
 }
 
 export function validate(config: Record<string, unknown>) {
@@ -38,7 +43,9 @@ export function validate(config: Record<string, unknown>) {
         enableImplicitConversion: true,
     });
 
-    const errors = validateSync(validatedConfig, { skipMissingProperties: false });
+    const errors = validateSync(validatedConfig, {
+        skipMissingProperties: false,
+    });
 
     if (errors.length > 0) {
         throw new Error(errors.toString());

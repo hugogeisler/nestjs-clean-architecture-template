@@ -4,7 +4,9 @@ import { EnvironmentConfigService } from '../environment-config/environment-conf
 import { Module } from '@nestjs/common';
 import { EnvironmentConfigModule } from '../environment-config/environment-config.module';
 
-export const getTypeOrmModuleOptions = (config: EnvironmentConfigService): TypeOrmModuleOptions => TypeOrmConfig;
+export const getTypeOrmModuleOptions = (
+    config: EnvironmentConfigService,
+): TypeOrmModuleOptions => TypeOrmConfig;
 
 @Module({
     imports: [

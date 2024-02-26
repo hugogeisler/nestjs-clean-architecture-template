@@ -20,7 +20,9 @@ export class EnvironmentConfigService implements DatabaseConfig, JWTConfig {
     }
 
     getJwtRefreshExpirationTime(): string {
-        return this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRATION_TIME');
+        return this.configService.get<string>(
+            'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
+        );
     }
 
     getDatabaseHost(): string {
@@ -41,5 +43,13 @@ export class EnvironmentConfigService implements DatabaseConfig, JWTConfig {
 
     getDatabaseName(): string {
         return this.configService.get<string>('DATABASE_NAME');
+    }
+
+    getAdminEmail(): string {
+        return this.configService.get<string>('ADMIN_EMAIL');
+    }
+
+    getAdminPassword(): string {
+        return this.configService.get<string>('ADMIN_PASSWORD');
     }
 }

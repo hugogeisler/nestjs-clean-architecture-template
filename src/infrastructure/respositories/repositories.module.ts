@@ -1,7 +1,7 @@
 import { User } from '@infrastructure/entities/user.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseUserRepository } from './user.repository';
+import { DatabaseUserRepository } from './user/user.repository';
 import { TypeOrmConfigModule } from '@infrastructure/config/typeorm-config/typeorm-config.module';
 
 @Module({

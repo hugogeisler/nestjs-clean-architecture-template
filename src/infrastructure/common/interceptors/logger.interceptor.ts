@@ -1,5 +1,10 @@
 import { LoggerService } from '@infrastructure/logger/logger.service';
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import {
+    CallHandler,
+    ExecutionContext,
+    Injectable,
+    NestInterceptor,
+} from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 
 @Injectable()
@@ -13,13 +18,18 @@ export class LoggingInterceptor implements NestInterceptor {
 
         const ip = this.getIP(request);
 
-        this.logger.log(`Incoming Request on ${request.path}`, `method=${request.method} ip=${ip}`);
+        this.logger.log(
+            `Incoming Request on ${request.path}`,
+            `method=${request.method} ip=${ip}`,
+        );
 
         return next.handle().pipe(
             tap(() => {
                 this.logger.log(
                     `End Request for ${request.path}`,
-                    `method=${request.method} ip=${ip} duration=${Date.now() - now}ms`,
+                    `method=${request.method} ip=${ip} duration=${
+                        Date.now() - now
+                    }ms`,
                 );
             }),
         );

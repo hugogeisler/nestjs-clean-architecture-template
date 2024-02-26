@@ -1,7 +1,16 @@
-import { Column, CreateDateColumn, Entity, ObjectIdColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { UserRole } from '@domain/aggregates/user.aggregate';
+import {
+    Column,
+    Entity,
+    ObjectIdColumn,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity()
+@Entity({
+    name: 'users',
+})
 export class User {
+    @PrimaryGeneratedColumn('uuid')
     @ObjectIdColumn()
     id: string;
 
@@ -11,15 +20,12 @@ export class User {
     @Column()
     password: string;
 
+    @Column({ enum: ['ADMINISTRATOR', 'USER'], default: 'USER' })
+    role: UserRole;
+
     @Column({ nullable: true })
     last_login?: Date;
 
-    @Column('varchar', { nullable: true })
-    hach_refresh_token: string;
-
-    @CreateDateColumn({ name: 'createdate' })
-    created_at: Date;
-
-    @UpdateDateColumn({ name: 'updateddate' })
-    updated_at: Date;
+    @Column({ nullable: true })
+    hash_refresh_token: string;
 }

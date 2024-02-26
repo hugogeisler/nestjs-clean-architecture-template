@@ -1,8 +1,16 @@
+import { UserRole } from '@domain/aggregates/user.aggregate';
+
 export interface IJwtServicePayload {
-    username: string;
+    user_id: string;
+    email: string;
+    role: UserRole;
 }
 
 export interface IJwtService {
     checkToken(token: string): Promise<any>;
-    createToken(payload: IJwtServicePayload, secret: string, expiresIn: string): string;
+    createToken(
+        payload: IJwtServicePayload,
+        secret: string,
+        expiresIn: string,
+    ): string;
 }

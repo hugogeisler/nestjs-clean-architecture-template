@@ -1,4 +1,4 @@
-import { ControllersModule } from '@infrastructure/controllers/controllers.module';
+import { HttpControllersModule } from '@infrastructure/controllers/http/http-controlleur.module';
 import { ExceptionsModule } from '@infrastructure/exceptions/exceptions.module';
 import { LoggerModule } from '@infrastructure/logger/logger.module';
 import { CryptModule } from '@infrastructure/services/crypt/crypt.module';
@@ -11,6 +11,8 @@ import { EnvironmentConfigModule } from '@infrastructure/config/environment-conf
 import { LocalStrategy } from '@infrastructure/common/strategies/local.strategy';
 import { JwtStrategy } from '@infrastructure/common/strategies/jwt.strategy';
 import { JwtRefreshTokenStrategy } from '@infrastructure/common/strategies/jwt-refresh.strategy';
+import { UuidModule } from '@infrastructure/services/uuid/uuid.module';
+import { AppService } from './app.service';
 
 @Module({
     imports: [
@@ -21,11 +23,17 @@ import { JwtRefreshTokenStrategy } from '@infrastructure/common/strategies/jwt-r
         LoggerModule,
         ExceptionsModule,
         UsecasesProxyModule.register(),
-        ControllersModule,
+        HttpControllersModule,
         CryptModule,
         JwtServiceModule,
+        UuidModule,
         EnvironmentConfigModule,
     ],
-    providers: [LocalStrategy, JwtStrategy, JwtRefreshTokenStrategy],
+    providers: [
+        LocalStrategy,
+        JwtStrategy,
+        JwtRefreshTokenStrategy,
+        AppService,
+    ],
 })
 export class AppModule {}

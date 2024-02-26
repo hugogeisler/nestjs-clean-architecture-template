@@ -6,11 +6,17 @@ import { AllExceptionFilter } from '@infrastructure/common/filter/exception.filt
 import { LoggerService } from '@infrastructure/logger/logger.service';
 import { ValidationPipe } from '@nestjs/common';
 import { LoggingInterceptor } from '@infrastructure/common/interceptors/logger.interceptor';
-import { ResponseInterceptor } from '@infrastructure/common/interceptors/response.interceptor';
+import { ResponseFormat, ResponseInterceptor } from '@infrastructure/common/interceptors/response.interceptor';
+import { ILogger } from '@domain/logger/logger.interface';
 
 (async () => {
     const env = process.env.NODE_ENV;
     const app = await NestFactory.create(AppModule);
+
+    // ----------------------------------------------------
+    // Get modules
+    // ----------------------------------------------------
+    const logger = app.get<ILogger>(LoggerService);
 
     // ----------------------------------------------------
     // Set Server
@@ -34,9 +40,11 @@ import { ResponseInterceptor } from '@infrastructure/common/interceptors/respons
     // Add Swagger documentation
     // ----------------------------------------------------
     if (env !== 'production') {
-        const config = new DocumentBuilder().addBearerAuth().setTitle('API Name').setVersion('1.0.0').build();
-
-        const document = SwaggerModule.createDocument(app, config);
+        const config = new DocumentBuilder().addBearerAuth().setTitle('Documentation API').setVersion('1.0.0').build();
+        const document = SwaggerModule.createDocument(app, config, {
+            extraModels: [ResponseFormat],
+            deepScanRoutes: true,
+        });
         SwaggerModule.setup('api', app, document);
     }
 
@@ -44,5 +52,5 @@ import { ResponseInterceptor } from '@infrastructure/common/interceptors/respons
     // Start NestJS application
     // ----------------------------------------------------
     await app.listen(process.env.PORT);
-    console.log(`\nApplication is running on ${await app.getUrl()} 🚀`);
+    logger.log('main', `Application is running on ${await app.getUrl()} 🚀`);
 })();
